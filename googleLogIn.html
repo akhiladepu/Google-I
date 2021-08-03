@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<style>
+    #signUpContainer{
+        /* border:1px solid black; */
+        float:right;
+        padding:2% 1.5%;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin-top:-100px
+    }
+
+    #signUpContainer button{
+        margin-top: 10px;
+        margin-left: 10px;
+        padding:10px;
+        background-color: white;
+        border-radius: 10px;
+    }    
+
+    #logInContainer{
+        background-color: rgba(128, 128, 128, 0.1);
+        border:1px solid black;
+        border-radius: 10px;
+        padding:2% 1.5%;
+        align-items: center;
+        justify-content: center;
+        width:300px;
+        margin:100px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;        
+    }
+
+    #logInContainer input{
+        background-color: rgba(128, 128, 128, 0.05);
+        width:280px;
+        outline: none;
+        height:30px;
+        margin:15px 0px;
+        border-radius: 5px;
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    #logInContainer button{
+        width:250px;
+        height:30px;
+        margin:5px 18px;
+        border-radius: 6px;
+        border:1px solid rgb(75, 255, 75);
+        background-color: rgb(75, 255, 75);
+    }
+
+    #logInContainer button:hover{
+        width:250px;
+        height:30px;
+        margin:5px 20px;
+        border-radius: 6px;
+        border:1px solid green;
+        background-color: green;
+        color:white;
+    }
+</style>
+
+<body>
+    <div id="signUpContainer">
+        <div>New User?</div>
+        <button onclick="window.location.href='googleSignUp.html'">Sign Up</button>
+    </div>
+    <div id="logInContainer">
+        <form id="loginInForm">
+            <div>User Name</div>
+            <input type="text" id="username" placeholder="User Name" />
+            <div>Password</div>
+            <input type="password" id="password" placeholder="Password" /><br />
+            <button onclick="logIn(event)">Log In</button>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    function logIn(e) {
+
+        e.preventDefault();
+
+        var formData = {
+
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+            
+        }
+
+        var body = JSON.stringify(formData);
+
+        fetch("https://masai-api-mocker.herokuapp.com/auth/login", {
+        
+            method: "POST",
+
+            body: body,
+
+            headers: {
+
+                "Content-Type": "application/json",
+
+            }
+        })
+        .then((response)=>{
+
+            return response.json();
+
+        }).then(({message, error, token})=>{
+            // console.log('response:', response)
+
+            if(error == false && token != null){
+            //     console.log('error:', error)
+            //     console.log('message:', message)
+                
+                alert("Login Successful! Redirecting to homepage...");
+
+            setTimeout(()=>{
+
+                window.location.href="homePage.html";
+
+            }, 2000);
+
+            }else if(error == true){
+            //     console.log('error:', error)
+            //     console.log('message:', message)
+
+                alert(message);
+            }
+        })
+    }    
+</script>

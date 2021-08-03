@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<style>
+    #signUpContainer {
+        border: 1px solid black;
+        background-color: rgba(128, 128, 128, 0.1);
+        border-radius: 10px;
+        padding: 2% 1.5%;
+        align-items: center;
+        justify-content: center;
+        width: 300px;
+        margin: 8px auto;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    #signUpContainer input {
+        background-color: rgba(128, 128, 128, 0.05);
+        width: 280px;
+        outline: none;
+        height: 30px;
+        margin: 15px 0px;
+        border-radius: 5px;
+        border: 1px solid black;
+        text-align: center;
+    }
+
+    #signUpContainer button {
+        width: 250px;
+        height: 30px;
+        margin: 5px 18px;
+        border-radius: 6px;
+        border: 1px solid rgb(75, 255, 75);
+        background-color: rgb(75, 255, 75);
+    }
+
+    #signUpContainer button:hover {
+        width: 250px;
+        height: 30px;
+        margin: 5px 20px;
+        border-radius: 6px;
+        border: 1px solid green;
+        background-color: green;
+        color: white;
+    }
+</style>
+<body>
+    <div id="signUpContainer">
+        <form id="signUpForm">
+            <div>Name</div>
+            <input type="text" id="name" placeholder="Name" />
+            <div>Email</div>
+            <input type="text" id="email" placeholder="Email" />
+            <div>User Name</div>
+            <input type="text" id="username" placeholder="User Name" />
+            <div>Password</div>
+            <input type="password" id="password" placeholder="Password" />
+            <div>Confirm Password</div>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" />
+            <div>Mobile</div>
+            <input type="text" id="mobile" placeholder="Mobile" />
+            <div>Description</div>
+            <input type="text" id="description" placeholder="Description" /><br />
+            <button onclick="signUp(event)">Sign Up</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
+<script>
+    function signUp(e) {
+
+        e.preventDefault();
+
+        let password = document.getElementById("password").value;
+        let confirmPassword = document.getElementById("confirmPassword").value;
+
+        if(password == confirmPassword){
+            var formData = {
+                name: document.getElementById("username").value,
+                email: document.getElementById("email").value,
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+                mobile: document.getElementById("mobile").value,
+                description: document.getElementById("description").value,
+            }
+
+            var body = JSON.stringify(formData);
+
+            fetch("https://masai-api-mocker.herokuapp.com/auth/register",{
+
+                method: "POST",
+
+                body: body,
+
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then((response) => {
+                
+                return response.json();
+            
+            })
+            .then((response)=>{
+                console.log(response);
+                alert(`${response.message}`);
+            })
+            .catch((err)=>{
+                alert(`${err.message}`);
+            })
+        }
+        else{
+            alert(`Password should Match !`)
+        }
+    }
+
+</script>
